@@ -1,4 +1,5 @@
 #include "gdt.h"
+#include "display.h"
 #include <stdint.h>
 
 struct GDT_entry gdt_entries[5];
@@ -15,6 +16,8 @@ void init_Gdt(void) {
   setGdtGate(4, 0, 0xFFFFF, 0xF2, 0xC); // User data segment
 
   gdt_flush(&gdt_ptr);
+
+  // kprint("[*] GDT Initialization done!");
 }
 
 void setGdtGate(uint32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran) {

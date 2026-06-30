@@ -16,11 +16,11 @@ clean:
 	rm -rf $(BUILD_DIR)
 
 kernel: | $(BUILD_DIR)
-	$(GCC) $(CFLAGS) -c kmain.c -o $(BUILD_DIR)/kmain.o
-	$(GCC) $(CFLAGS) -c display.c -o $(BUILD_DIR)/display.o
-	$(GCC) $(CFLAGS) -c gdt.c -o $(BUILD_DIR)/gdt.o
-	$(GCC) $(CFLAGS) -c idt.c -o $(BUILD_DIR)/idt.o
-	$(GCC) $(CFLAGS) -c input/keyboard.c -o $(BUILD_DIR)/keyboard.o
+	$(GCC) $(CFLAGS) -c -g kmain.c -o $(BUILD_DIR)/kmain.o
+	$(GCC) $(CFLAGS) -c -g display.c -o $(BUILD_DIR)/display.o
+	$(GCC) $(CFLAGS) -c -g gdt.c -o $(BUILD_DIR)/gdt.o
+	$(GCC) $(CFLAGS) -c -g idt.c -o $(BUILD_DIR)/idt.o
+	$(GCC) $(CFLAGS) -c -g input/keyboard.c -o $(BUILD_DIR)/keyboard.o
 	nasm -f elf32 gdt.asm -o $(BUILD_DIR)/gdtasm.o
 	nasm -f elf32 idt.asm -o $(BUILD_DIR)/idtasm.o
 

@@ -1,9 +1,7 @@
-#include "display.h"
 #include "gdt.h"
+#include "idt.h"
 
 void kmain(void) {
-  // init_Gdt();
-
-  clear_screen();
-  kprint("[*] GDT Initialization done!");
+  init_Gdt();
+  idt_init();
 }

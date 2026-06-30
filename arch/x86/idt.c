@@ -1,4 +1,5 @@
 #include "idt.h"
+#include "display.h"
 #include <stdint.h>
 
 extern void irq1_keyboard_handler();
@@ -14,6 +15,8 @@ void idt_init(void) {
   setIdtGate(32, (uint32_t)irq1_keyboard_handler, 0x08, 0x0E, 0);
 
 	load_idt(idt_ptr);
+  
+  // kprint("[*] IDT initialization done");
 }
 
 void setIdtGate(uint32_t num, uint32_t offset, uint16_t segment_selector, uint8_t gate_type, uint8_t dpl) {

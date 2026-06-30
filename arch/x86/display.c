@@ -20,7 +20,7 @@ void clear_screen(void) {
 void kprint(const char *str) {
   unsigned int j = 0;
 
-  while (str[j] != '\0') {
+  while (str[j++] != '\0') {
     vidptr[current_loc++] = str[j];
     vidptr[current_loc++] = 0x07;
   }
