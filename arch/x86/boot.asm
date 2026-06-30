@@ -9,6 +9,8 @@ section .text
     dd - (0x1BADB002 + 0x00)
 
 global start
+global read_port
+global write_port
 extern kmain
 
 start:
