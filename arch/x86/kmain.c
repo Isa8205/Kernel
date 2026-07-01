@@ -4,4 +4,6 @@
 void kmain(void) {
   init_Gdt();
   idt_init();
+
+  while (1);
 }

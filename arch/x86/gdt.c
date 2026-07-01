@@ -17,7 +17,7 @@ void init_Gdt(void) {
 
   gdt_flush(&gdt_ptr);
 
-  // kprint("[*] GDT Initialization done!");
+  kprint("[*] GDT Initialization done!");
 }
 
 void setGdtGate(uint32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran) {
