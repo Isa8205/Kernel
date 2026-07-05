@@ -1,5 +1,5 @@
 #include "gdt.h"
-#include "display.h"
+#include "vga.h"
 #include <stdint.h>
 
 struct GDT_entry gdt_entries[5];
@@ -10,10 +10,10 @@ void init_Gdt(void) {
   gdt_ptr.base = (uint32_t)gdt_entries;
 
   setGdtGate(0, 0, 0, 0, 0); // Null segment
-  setGdtGate(1, 0, 0xFFFFF, 0x9A, 0xC); // Kernel code segment
-  setGdtGate(2, 0, 0xFFFFF, 0x92, 0xC); // Kernel data segment
-  setGdtGate(3, 0, 0xFFFFF, 0xFA, 0xC); // User code segment
-  setGdtGate(4, 0, 0xFFFFF, 0xF2, 0xC); // User data segment
+  setGdtGate(1, 0, 0xFFFFF, 0x9A, 0x0C); // Kernel code segment
+  setGdtGate(2, 0, 0xFFFFF, 0x92, 0x0C); // Kernel data segment
+  setGdtGate(3, 0, 0xFFFFF, 0xFA, 0x0C); // User code segment
+  setGdtGate(4, 0, 0xFFFFF, 0xF2, 0x0C); // User data segment
 
   gdt_flush(&gdt_ptr);
 

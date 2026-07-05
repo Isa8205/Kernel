@@ -5,7 +5,7 @@ LDFLAGS = --no-warn-rwx-segments
 
 BUILD_DIR = build
 
-OBJS = $(BUILD_DIR)/kmain.o $(BUILD_DIR)/display.o $(BUILD_DIR)/gdt.o $(BUILD_DIR)/boot.o $(BUILD_DIR)/gdtasm.o $(BUILD_DIR)/keyboard.o $(BUILD_DIR)/idtasm.o $(BUILD_DIR)/idt.o
+OBJS = $(BUILD_DIR)/kmain.o $(BUILD_DIR)/vga.o $(BUILD_DIR)/gdt.o $(BUILD_DIR)/boot.o $(BUILD_DIR)/gdtasm.o $(BUILD_DIR)/keyboard.o $(BUILD_DIR)/idtasm.o $(BUILD_DIR)/idt.o
 
 all: kernel boot link
 
@@ -17,7 +17,7 @@ clean:
 
 kernel: | $(BUILD_DIR)
 	$(GCC) $(CFLAGS) -c -g kmain.c -o $(BUILD_DIR)/kmain.o
-	$(GCC) $(CFLAGS) -c -g display.c -o $(BUILD_DIR)/display.o
+	$(GCC) $(CFLAGS) -c -g vga.c -o $(BUILD_DIR)/vga.o
 	$(GCC) $(CFLAGS) -c -g gdt.c -o $(BUILD_DIR)/gdt.o
 	$(GCC) $(CFLAGS) -c -g idt.c -o $(BUILD_DIR)/idt.o
 	$(GCC) $(CFLAGS) -c -g input/keyboard.c -o $(BUILD_DIR)/keyboard.o

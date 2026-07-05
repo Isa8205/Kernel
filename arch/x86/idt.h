@@ -20,6 +20,7 @@ typedef struct {
 
 void idt_init(void);
 void setIdtGate(uint32_t num, uint32_t offset, uint16_t segment_selector, uint8_t gate_type, uint8_t dpl);
-extern void load_idt(IDT_ptr_t idt_ptr);
+extern void load_idt(IDT_ptr_t* idt_ptr);
+void send_eoi(uint8_t irq);
 
 #endif
