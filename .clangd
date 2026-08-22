@@ -1,0 +1,10 @@
+CompileFlags:
+  Add:
+    - --target=i386-unknown-none
+    - -ffreestanding
+    - -fno-builtin
+
+Diagnostics:
+  Suppress:
+    - -Wpointer-to-int-cast
+    - -Wint-to-pointer-cast

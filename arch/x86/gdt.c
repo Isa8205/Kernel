@@ -10,14 +10,14 @@ void init_Gdt(void) {
   gdt_ptr.base = (uint32_t)gdt_entries;
 
   setGdtGate(0, 0, 0, 0, 0); // Null segment
-  setGdtGate(1, 0, 0xFFFFF, 0x9A, 0x0C); // Kernel code segment
-  setGdtGate(2, 0, 0xFFFFF, 0x92, 0x0C); // Kernel data segment
-  setGdtGate(3, 0, 0xFFFFF, 0xFA, 0x0C); // User code segment
-  setGdtGate(4, 0, 0xFFFFF, 0xF2, 0x0C); // User data segment
+  setGdtGate(1, 0, 0xFFFFFFFF, 0x9A, 0x0C); // Kernel code segment
+  setGdtGate(2, 0, 0xFFFFFFFF, 0x92, 0x0C); // Kernel data segment
+  setGdtGate(3, 0, 0xFFFFFFFF, 0xFA, 0x0C); // User code segment
+  setGdtGate(4, 0, 0xFFFFFFFF, 0xF2, 0x0C); // User data segment
 
   gdt_flush(&gdt_ptr);
 
-  kprint("[*] GDT Initialization done!");
+  kprint("[*] GDT Initialization done!\n");
 }
 
 void setGdtGate(uint32_t num, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran) {

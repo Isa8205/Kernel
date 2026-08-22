@@ -1,9 +1,14 @@
 #include <stdint.h>
 #include "../vga.h"
 #include "../idt.h"
+#include "../util.h"
 
-extern uint8_t read_port(uint16_t port);
-extern void write_port(uint16_t port, uint8_t val);
+void keyboard_callback(void);
+
+void keyboard_init(void) {
+  irq_register_handler(1, (void *)keyboard_callback);
+  kprint("[*] Keyboard Initialization done");
+}
 
 void keyboard_callback(void) {
   uint8_t scancode = read_port(0x60);
@@ -14,6 +19,4 @@ void keyboard_callback(void) {
   hex[2] = hex_chars[(scancode >> 4) & 0xF];
   hex[3] = hex_chars[scancode & 0xF];
   kprint(hex);
-
-  send_eoi(1);
 }
