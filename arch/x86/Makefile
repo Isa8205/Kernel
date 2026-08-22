@@ -31,4 +31,3 @@ link: kernel boot
 	$(LD) -T ../../linker.ld -o $(BUILD_DIR)/kernel $(OBJS) $(LDFLAGS)
 	cp $(BUILD_DIR)/kernel OS/boot/kernel
 	grub-mkrescue -o kernel.iso OS/
-

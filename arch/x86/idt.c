@@ -49,7 +49,7 @@ void idt_init(void) {
 
 	load_idt(&idt_ptr);
   
-  // kprint("[*] IDT initialization done");
+  kprint("[*] IDT initialization done");
 }
 
 void setIdtGate(uint32_t num, uint32_t offset, uint16_t segment_selector, uint8_t gate_type, uint8_t dpl) {

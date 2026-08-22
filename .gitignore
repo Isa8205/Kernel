@@ -1,6 +1,9 @@
 #IDE folders
 .vscode
 
+#Log files
+qemu.log
+
 # Prerequisites
 *.d
 

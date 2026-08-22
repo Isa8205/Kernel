@@ -1,19 +1,9 @@
-#include <stdint.h>
-
-int current_loc = 0;
-char *vidptr = (char*)0xb8000;
-
-void printk(const char *str)
-{
-	unsigned int i = 0;
-	while (str[i] != '\0') {
-		vidptr[current_loc++] = str[i++];
-		vidptr[current_loc++] = 0x07;
-	}
-}
+#include "vga.h"
+#include "gdt.h"
+#include "idt.h"
 
 void kmain(void) {
-  printk("Hello world\r\n");
-  
-  while(1);
+  volatile unsigned short *vga = (volatile unsigned short *)0xB8000;
+  vga[0] = (0x4F << 8) | 'X'; // Prints a white 'X' on a red background at top-left
+  while (1);
 }

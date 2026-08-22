@@ -1,21 +1,28 @@
 ;;kernel.asm
 bits 32
 
-section .text
-    ;multiboot spec
-    align 4
-    dd 0x1BADB002
-    dd 0x00
-    dd - (0x1BADB002 + 0x00)
+MBALIGN  equ  1 << 0                   ; align loaded modules on page boundaries
+MEMINFO  equ  1 << 1                   ; provide memory map
+FLAGS    equ  MBALIGN | MEMINFO        ; Multiboot 'flag' field
+MAGIC    equ  0x1BADB002               ; 'magic number' lets bootloader find the header
+CHECKSUM equ -(MAGIC + FLAGS)          ; checksum required by multiboot spec
 
-global start
+section .multiboot
+align 4
+    dd MAGIC
+    dd FLAGS
+    dd CHECKSUM
+
 global read_port
 global write_port
 extern kmain
 
-start:
+section .text
+global _start
+_start:
     cli
-    mov esp, stack_space
+    ; Set up the stack
+    mov esp, stack_top
     call kmain
     hlt
 
@@ -31,5 +38,7 @@ write_port:
     ret
     
 section .bss
-resb 8192
-stack_space:
+align 16
+stack_bottom:
+  resb 16834 ; 16Kb Stack
+stack_top:

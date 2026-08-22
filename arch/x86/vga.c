@@ -4,7 +4,7 @@
 uint16_t column = 0;
 uint16_t line = 0;
 
-uint16_t *vga = (uint16_t *const)0xB800;
+uint16_t *vga = (uint16_t *const)0xB8000;
 const uint16_t defaultColor = (COLOR8_BLACK << 8) | (COLOR8_LIGHT_GRAY << 12);
 
 void clear_screen(void) {
