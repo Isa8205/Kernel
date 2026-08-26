@@ -59,6 +59,9 @@ void kprint(const char *str) {
           tabLen--;
         }
         break;
+      case '\b':
+        column--;
+        vga[line * WIDTH + column] = ' ' | defaultColor;
       default:
         if (column >= WIDTH) {
           newLine();

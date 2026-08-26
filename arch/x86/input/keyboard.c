@@ -1,6 +1,7 @@
 #include "../idt.h"
 #include "../util.h"
 #include "../vga.h"
+#include <stdbool.h>
 #include <stdint.h>
 
 #define SCAN_LSHIFT 0x2A
@@ -11,12 +12,12 @@
 #define SCAN_NUMLOCK 0x45
 
 typedef struct {
-  int shift_pressed;
-  int ctrl_pressed;
-  int alt_pressed;
-  int caps_lock;
-  int num_lock;
-  int e0_extended; // If the previous byte was 0xE0
+  bool shift_pressed;
+  bool ctrl_pressed;
+  bool alt_pressed;
+  bool caps_lock;
+  bool num_lock;
+  bool e0_extended; // If the previous byte was 0xE0
 } KeyboardState;
 
 const char base_layout[128] = {
@@ -38,50 +39,62 @@ const char shift_layout[128] = {
 };
 
 
-KeyboardState kb_state;
+KeyboardState kb_state = {false, false, false, false, false, false};
 
 void keyboard_callback(void);
 
 void keyboard_init(void) {
   irq_register_handler(1, (void *)keyboard_callback);
-  memfill(&kb_state, 0, sizeof(KeyboardState));
   kprint("[*] Keyboard Initialization done");
 }
 
 void keyboard_callback(void) {
   uint8_t scancode = read_port(0x60);
 
+
   if (scancode == 0xE0) {
     kb_state.e0_extended = 0;
     return;
   }
 
-  int is_release = (scancode & 0x80) != 0;
-  int actual_key = scancode & ~(1 << 7); // Strip the highest bit
+  // print the scancode
+  
+  bool is_release = (scancode & (1 << 7)) != 0;
+  uint8_t actual_key = scancode & ~(1 << 7); // Strip the highest bit
+  // print_hex((char *)&actual_key, "Actual Key: ");
 
   if (is_release) {
     if (actual_key == SCAN_LSHIFT || actual_key == SCAN_RSHIFT) {
-      kb_state.shift_pressed = 0;
+      kb_state.shift_pressed = false;
     } else if (actual_key == SCAN_CTRL) {
-      kb_state.ctrl_pressed = 0;
+      kb_state.ctrl_pressed = false;
     } else if (actual_key == SCAN_ALT) {
-      kb_state.alt_pressed = 0;
+      kb_state.alt_pressed = false;
     }
 
-    kb_state.e0_extended = 0;
+    kb_state.e0_extended = false;
     return;
   }
 
   if (actual_key == SCAN_LSHIFT || actual_key == SCAN_RSHIFT) {
-    kb_state.shift_pressed = 0;
+    kb_state.shift_pressed = true;
+    return;
   } else if (actual_key == SCAN_CTRL) {
-    kb_state.ctrl_pressed = 0;
+    kb_state.ctrl_pressed = true;
+    return;
   } else if (actual_key == SCAN_ALT) {
-    kb_state.alt_pressed = 0;
+    kb_state.alt_pressed = true;
+    return;
   }
 
-  if (actual_key == SCAN_CAPSLOCK) kb_state.caps_lock = !kb_state.caps_lock;
-  if (actual_key == SCAN_NUMLOCK) kb_state.num_lock = !kb_state.num_lock;
+  if (actual_key == SCAN_CAPSLOCK) {
+    kb_state.caps_lock = kb_state.caps_lock ? false : true;
+    return;
+  }
+  if (actual_key == SCAN_NUMLOCK) {
+    kb_state.num_lock = kb_state.num_lock ? false : true;
+    return;
+  }
 
   char final_char = 0;
 
@@ -101,9 +114,10 @@ void keyboard_callback(void) {
     final_char = final_char + 32;
   }
 
-  if (final_char != 0) {
-    kprint(&final_char);
+  if (final_char != 0 && !is_release) {
+    char output[2] = { final_char, '\0'};
+    kprint(output);
   }
 
-  kb_state.e0_extended = 0;
+  kb_state.e0_extended = false;
 }

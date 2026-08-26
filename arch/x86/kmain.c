@@ -10,5 +10,6 @@ void kmain(void) {
   keyboard_init();
 
   kprint("Everything set");
+  clear_screen();
   while(1);
 }
